@@ -10,12 +10,12 @@ export default function useApplicationData() {
   const initialFetch = (user) => {
     if (user.id) {
       Promise.all([
-        axios.get(`/api/users/`),
-        axios.get(`/api/rooms/${user.id}`),
-        axios.get(`/api/channels/${user.id}`),
-        axios.get(`/api/messages/`),
-        axios.get(`/api/users/friends/${user.id}`),
-        axios.get(`/api/users/friends/requests/${user.id}`),
+        axios.get(`https://clarion-lhl-final.herokuapp.com/api/users/`),
+        axios.get(`https://clarion-lhl-final.herokuapp.com/api/rooms/${user.id}`),
+        axios.get(`https://clarion-lhl-final.herokuapp.com/api/channels/${user.id}`),
+        axios.get(`https://clarion-lhl-final.herokuapp.com/api/messages/`),
+        axios.get(`https://clarion-lhl-final.herokuapp.com/api/users/friends/${user.id}`),
+        axios.get(`https://clarion-lhl-final.herokuapp.com/api/users/friends/requests/${user.id}`),
       ]).then((all) => {
         const [users, rooms, channels, messages, friends, friendRequests] = all;
         dispatch({
@@ -56,7 +56,7 @@ export default function useApplicationData() {
       });
 
       socket.on("updateRooms", (id) => {
-        axios.get(`/api/rooms/${state.user.id}`).then((rooms) => {
+        axios.get(`https://clarion-lhl-final.herokuapp.com/api/rooms/${state.user.id}`).then((rooms) => {
           dispatch({
             type: r.SET_ROOMS,
             value: rooms.data,
@@ -69,7 +69,7 @@ export default function useApplicationData() {
       });
 
       socket.on("updateChannels", () => {
-        axios.get(`/api/channels/${user.id}`).then((channels) => {
+        axios.get(`https://clarion-lhl-final.herokuapp.com/api/channels/${user.id}`).then((channels) => {
           dispatch({
             type: r.SET_CHANNELS,
             value: channels.data,
@@ -111,7 +111,7 @@ export default function useApplicationData() {
   const registerUser = (name, email, password) => {
     clearErrors();
     axios
-      .post(`api/users/register`, {
+      .post(`https://clarion-lhl-final.herokuapp.com/api/users/register`, {
         name,
         email,
         password,
@@ -123,7 +123,7 @@ export default function useApplicationData() {
   // TODO: UNCOMMENT - uncomment for deploy
   const loginUser = (id) => {
     clearErrors();
-    axios.get(`api/users/login/${id}`).then((user) => {
+    axios.get(`https://clarion-lhl-final.herokuapp.com/api/users/login/${id}`).then((user) => {
       dispatch(user.data.action);
     });
   };
@@ -196,13 +196,13 @@ export default function useApplicationData() {
   // -----------------------------WEBSOCKET-------------------------------------
 
   const sendFriendRequest = (user_id, friend_id) => {
-    axios.post("/api/users/friends/add", { user_id, friend_id }).then(() => {
+    axios.post("https://clarion-lhl-final.herokuapp.com/api/users/friends/add", { user_id, friend_id }).then(() => {
       state.socket.emit("sendfriendrequest", { value: { user_id, friend_id } });
     });
   };
 
   const cancelFriendRequest = (user_id, friend_id) => {
-    axios.post("/api/users/friends/delete", { user_id, friend_id }).then(() => {
+    axios.post("https://clarion-lhl-final.herokuapp.com/api/users/friends/delete", { user_id, friend_id }).then(() => {
       state.socket.emit("cancelfriendrequest", {
         value: { user_id, friend_id },
       });
@@ -210,7 +210,7 @@ export default function useApplicationData() {
   };
 
   const acceptFriendRequest = (user_id, friend_id) => {
-    axios.post("/api/users/friends/accept", { user_id, friend_id }).then(() => {
+    axios.post("https://clarion-lhl-final.herokuapp.com/api/users/friends/accept", { user_id, friend_id }).then(() => {
       state.socket.emit("acceptfriendrequest", {
         value: { user_id, friend_id },
       });
@@ -221,7 +221,7 @@ export default function useApplicationData() {
   };
 
   const sendMessage = (messageData) => {
-    return axios.post(`/api/messages`, messageData).then((message) => {
+    return axios.post(`https://clarion-lhl-final.herokuapp.com/api/messages`, messageData).then((message) => {
       dispatch({
         type: r.ADD_MESSAGES,
         value: message.data[0],
@@ -231,7 +231,7 @@ export default function useApplicationData() {
   };
 
   const createRoom = (roomData) => {
-    return axios.post(`/api/rooms`, roomData).then((room) => {
+    return axios.post(`https://clarion-lhl-final.herokuapp.com/api/rooms`, roomData).then((room) => {
       dispatch({
         type: r.ADD_ROOMS,
         value: room.data[0],
@@ -240,31 +240,31 @@ export default function useApplicationData() {
   };
 
   const editRoom = (name, id) => {
-    return axios.post(`/api/rooms/edit`, { name, id }).then(() => {
+    return axios.post(`https://clarion-lhl-final.herokuapp.com/api/rooms/edit`, { name, id }).then(() => {
       state.socket.emit("updateRooms", { id });
     });
   };
 
   const deleteRoom = (id) => {
-    return axios.post(`/api/rooms/delete`, { id }).then(() => {
+    return axios.post(`https://clarion-lhl-final.herokuapp.com/api/rooms/delete`, { id }).then(() => {
       state.socket.emit("updateRooms", { id });
     });
   };
 
   const editChannel = (name, id) => {
-    return axios.post(`/api/channels/edit`, { name, id }).then(() => {
+    return axios.post(`https://clarion-lhl-final.herokuapp.com/api/channels/edit`, { name, id }).then(() => {
       state.socket.emit("updateChannels");
     });
   };
 
   const deleteChannel = (id) => {
-    return axios.post(`/api/channels/delete`, { id }).then(() => {
+    return axios.post(`https://clarion-lhl-final.herokuapp.com/api/channels/delete`, { id }).then(() => {
       state.socket.emit("updateChannels");
     });
   };
 
   const createChannel = (channelData) => {
-    return axios.post(`/api/channels`, channelData).then((channel) => {
+    return axios.post(`https://clarion-lhl-final.herokuapp.com/api/channels`, channelData).then((channel) => {
       dispatch({
         type: r.ADD_CHANNELS,
         value: channel.data[0],
@@ -275,7 +275,7 @@ export default function useApplicationData() {
 
   const addUserToRoom = (id, room) => {
     return axios
-      .post("/api/rooms/adduser", { userID: id, roomID: room.id })
+      .post("https://clarion-lhl-final.herokuapp.com/api/rooms/adduser", { userID: id, roomID: room.id })
       .then(state.socket.emit("updateRooms", { id: room.id }));
   };
 
