@@ -1,0 +1,41 @@
+@import "../../styles/variables.scss";
+
+.container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  .user-options {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: $icon-margin;
+
+    &--hamburger {
+      @include icon-vars;
+    }
+
+    &--gear {
+      background-color: transparent;
+      color: lighten($dark-background, 20);
+      @include icon-vars;
+    }
+
+    &--avatar {
+      color: lighten($dark-background, 10);
+      @include icon-vars;
+    }
+
+    &--logo {
+      @include icon-vars;
+    }
+    :hover {
+      color: lighten($dark-background, 40);
+      cursor: pointer;
+    }
+  }
+}

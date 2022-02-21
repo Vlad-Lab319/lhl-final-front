@@ -1,0 +1,83 @@
+@import "../styles/variables.scss";
+
+//TODO: Some scss needs to be moved down into the appropriate scss files
+
+.header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  flex-direction: row;
+  color: white;
+  background-color: $dark-background;
+  height: $header-height;
+}
+
+.container {
+  width: 100%;
+}
+
+.sidebar {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  top: $header-height;
+  bottom: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  cursor: pointer;
+
+  &--rooms {
+    left: 0;
+    width: $sidebar-width-rooms;
+    min-width: $sidebar-width-rooms;
+    background-color: lighten($dark-background, 5);
+    margin: 0;
+  }
+
+  &--channels {
+    left: $sidebar-width-rooms;
+    width: $sidebar-width-channels;
+    min-width: $sidebar-width-channels;
+    background-color: lighten($dark-background, 10);
+  }
+
+  &--friends {
+    left: $sidebar-width-rooms;
+    width: $sidebar-width-channels;
+    min-width: $sidebar-width-channels;
+    background-color: lighten($dark-background, 10);
+  }
+
+  &--room-members {
+    right: 0;
+    width: $sidebar-width-channels;
+    min-width: $sidebar-width-channels;
+    background-color: lighten($dark-background, 10);
+  }
+
+  &--find-friend {
+    right: 0;
+    width: $sidebar-width-channels;
+    min-width: $sidebar-width-channels;
+    background-color: lighten($dark-background, 10);
+  }
+
+  &::-webkit-scrollbar {
+    width: 0px;
+  }
+}
+
+.messages {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  top: $header-height;
+  bottom: 0;
+  left: $sidebar-width-rooms + $sidebar-width-channels;
+  right: $sidebar-width-room-members;
+  background-color: lighten($dark-background, 5);
+  align-items: flex-start;
+}
